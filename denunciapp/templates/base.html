@@ -1,0 +1,32 @@
+<!-- templates -> files that contain static data as well as placeholders for dynamic data -->
+<!-- Flask uses Jinja . AUtoscapes any data that is rendered in HTML templates. Its safe to render user_inputs-->
+<!-- Special delimiters are used to distinguisd jinja syntsx from static content {} Expression that will be output in the final document-->
+<!-- %% denotes a control flow statement. Blocks are denoted by tags-->
+
+<!DOCTYPE html>
+<title>{% block title %}{% endblock %}</title>
+<link rel="stylesheet" href="{{ url_for('static',filename='style.css') }}">
+<nav>
+  <h1>Demo</h1>
+  <ul>
+    {% if g.user %}
+      <li> <span>{{ g.user['username'] }}</span> </li>
+      <li> <a href="{{ url_for('auth.logout') }}">Logout</a> </li>
+    {% else %}
+      <li> <a href="{{ url_for('auth.register') }}">Register</a> </li>
+      <li> <a href="{{ url_for('auth.login') }}">Log In</a> </li>
+    {% endif %}
+  </ul>
+</nav>
+<section class='content'>
+  <header>
+    {% block header %}{% endblock %}
+  </header>
+  {% for message in get_flashed_messages() %}
+  <div class="flash">{{message}}</div>
+  {% endfor %}
+  {% block content %}{% endblock %}
+
+
+
+</section>
